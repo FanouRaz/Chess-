@@ -1,9 +1,11 @@
 package com.fanou.pieces;
 
-import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
+import com.fanou.jeu.Case;
 
 public abstract class Piece extends JLabel {
     private String nom; 
@@ -20,6 +22,9 @@ public abstract class Piece extends JLabel {
         this.position[1] = y;
         this.setHorizontalAlignment(JLabel.CENTER);
         this.setVerticalAlignment(JLabel.CENTER);
+
+        setImage(new ImageIcon(getClass().getResource(String.format("/assets/images/%s %s.png",nom, couleur))));
+        setIcon(this.getImage());
     }
 
     public int[] getPosition(){
@@ -30,6 +35,7 @@ public abstract class Piece extends JLabel {
         this.position[0] = x;
         this.position[1] = y;
     }
+
     public String getNom(){
         return this.nom;
     }
@@ -45,6 +51,16 @@ public abstract class Piece extends JLabel {
     public void setImage(ImageIcon img) {
     	this.iconPiece = img;
     }
-    public abstract void deplacement();
+    
+    /**
+     * @param grille : La grille de jeu actuelle indiquant l'état de toutes les cases
+     * @return Liste des positions où la piece peut se déplacer en considérant l'état de la grille de jeu actuelle entrée en paramètre
+     */
+    public abstract ArrayList<int[]> getMovablePositions(Case[][] grille);
+    
 
+    @Override
+    public String toString(){
+        return String.format("%s %s (%d,%d)",nom,couleur,position[0],position[1]);
+    }
 }
